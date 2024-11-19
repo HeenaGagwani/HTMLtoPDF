@@ -4,14 +4,14 @@ import pdfkit
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# Folder path
+# Folder path to monitor. here we have named it as 'test'.
 FOLDER_TO_WATCH = "test"
 
 # Cache to store file modification times
 file_mod_times = {}
 
 
-# Function to convert HTML to PDF
+# custom function to convert HTML to PDF
 def convert_html_to_pdf(html_file_path):
     pdf_file_path = html_file_path.replace(".html", ".pdf")
     try:
@@ -24,7 +24,7 @@ def convert_html_to_pdf(html_file_path):
         print(f"Failed to convert {html_file_path} to PDF: {e}")
 
 
-# Function to check if a file has been modified
+# custom function to check if a file has been modified
 def has_file_been_modified(file_path):
     # Get the last modification time
     mod_time = os.path.getmtime(file_path)
@@ -35,7 +35,7 @@ def has_file_been_modified(file_path):
     return False
 
 
-# Event Handler for the watchdog
+# class for watchdog
 class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         # If an HTML file is modified, convert it to PDF
@@ -48,7 +48,7 @@ class FileChangeHandler(FileSystemEventHandler):
             convert_html_to_pdf(event.src_path)
 
 
-# Monitor the folder
+# Monitoring the folder 'test'
 def monitor_folder():
     event_handler = FileChangeHandler()
     observer = Observer()
@@ -72,5 +72,5 @@ if __name__ == "__main__":
             if has_file_been_modified(file_path):
                 convert_html_to_pdf(file_path)
 
-    # Start monitoring the folder
+    # Starting the monitoring of the folder
     monitor_folder()
